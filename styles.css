@@ -2205,3 +2205,15 @@ body {
 .card, .info-card, .timeline-card, .project-card, .contact-form, .availability-card, .github-cta-card, .skill-category { box-shadow: var(--glow-shadow-soft); border-color: var(--glow-border-soft); }
 .card:hover, .info-card:hover, .timeline-card:hover, .project-card:hover, .contact-form:hover, .availability-card:hover, .github-cta-card:hover, .skill-category:hover { box-shadow: var(--glow-shadow-strong); border-color: var(--glow-border-strong); }
 @media (max-width: 900px) { .skill-category { min-height: initial; } }
+/* Hero Matrix (intro-only) */
+.hero { position: relative; overflow: hidden; }
+.hero-matrix {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1; /* behind content if hero content has higher z */
+  opacity: 0.28; /* subtle */
+}
+@media (max-width: 768px) { .hero-matrix{ opacity: 0.22; } }

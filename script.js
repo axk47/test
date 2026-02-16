@@ -759,12 +759,69 @@ function consoleEasterEgg() {
 }
 
 // ============================================
-// INITIALIZE
+// HERO MATRIX — intro-only falling 0/1 then freeze
 // ============================================
+function initHeroMatrix() {
+  const canvas = document.getElementById('heroMatrix');
+  const hero = document.getElementById('hero');
+  if (!canvas || !hero) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let fontSize = 14; // px
+  let cols = 0; let drops = [];
+
+  function resize() {
+    const r = hero.getBoundingClientRect();
+    const w = Math.max(320, Math.floor(r.width));
+    const h = Math.max(240, Math.floor(r.height));
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    canvas.width = Math.floor(w * dpr);
+    canvas.height = Math.floor(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    fontSize = Math.max(12, Math.min(18, Math.floor(w / 80))); // adaptive density
+    cols = Math.floor(w / fontSize);
+    drops = new Array(cols).fill(0).map(() => Math.floor(Math.random() * (h / fontSize)));
+    ctx.clearRect(0,0,w,h);
+  }
+
+  resize();
+  let running = true; let started = performance.now();
+
+  function draw(ts) {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    // semi-transparent wipe for trail
+    ctx.fillStyle = 'rgba(15,23,42,0.12)';
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.fillStyle = '#38bdf8'; // accent cyan
+    ctx.font = `${fontSize}px "Courier New", monospace`;
+
+    for (let i = 0; i < cols; i++) {
+      const char = Math.random() > 0.5 ? '1' : '0';
+      const x = i * fontSize;
+      const y = drops[i] * fontSize;
+      ctx.fillText(char, x, y);
+      if (y > h && Math.random() > 0.975) drops[i] = 0; else drops[i]++;
+    }
+    // run ~3s then freeze
+    if (running && ts - started < 3000) {
+      requestAnimationFrame(draw);
+    } else {
+      running = false; // leave last frame drawn
+    }
+  }
+
+  requestAnimationFrame(draw);
+  window.addEventListener('resize', () => {
+    const wasRunning = running;
+    resize();
+    if (wasRunning) requestAnimationFrame(draw);
+  });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Background effects
-  initMatrixRain();
+    initHeroMatrix();
   initFloatingOrbs();
   initParticleField();
   initCyberGrid();
