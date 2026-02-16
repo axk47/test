@@ -775,7 +775,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTiltCards();
   
   // Render content
-  renderSkills();
+  if (window.renderSkills) window.renderSkills();
   renderExperience();
   renderProjects();
   

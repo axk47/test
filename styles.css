@@ -1019,12 +1019,12 @@ body {
   50% { transform: translateY(-5px); }
 }
 
-/* Skills Breakdown */
+'/* Skills Breakdown */
 .skills-breakdown {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-}
+}' + "`r`n`r`n/* Equal heights for skill cards */`r`n.skills-breakdown{align-items:stretch;grid-template-columns:repeat(3,minmax(0,1fr));}`r`n.skills-breakdown > .tilt-card{height:100%;}`r`n.skills-breakdown > .tilt-card > .skill-category{height:100%;display:flex;flex-direction:column;}`r`n.skill-bars{flex:1;}"
 
 .skill-category {
   background: var(--bg-card);
@@ -1236,7 +1236,7 @@ body {
 }
 
 .timeline-desc li::before {
-  content: '›';
+  content: 'â€º';
   color: var(--accent);
   font-weight: bold;
   flex-shrink: 0;
@@ -1971,3 +1971,237 @@ body {
   background: rgba(56, 189, 248, 0.3);
   color: var(--text-primary);
 }
+/* ============================================
+   GITHUB CTA
+   ============================================ */
+.github-cta-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: 1.25rem 1.75rem;
+  min-height: 120px;
+  background: linear-gradient(135deg, rgba(30,41,59,0.75), rgba(15,23,42,0.7));
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
+  text-decoration: none;
+  color: var(--text-primary);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+  transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.github-cta-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56,189,248,0.35);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.45);
+}
+
+.github-cta-left { display: flex; align-items: center; gap: 1rem; }
+
+.github-logo {
+  display: grid; place-items: center;
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  background: radial-gradient(120px 80px at 30% 30%, rgba(56,189,248,0.12), transparent 60%),
+              rgba(15,23,42,0.6);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+
+.github-logo svg { width: 28px; height: 28px; opacity: 0.9; }
+
+.github-cta-text { display: grid; line-height: 1.1; }
+.gh-eyebrow { color: var(--text-secondary); font-size: 0.85rem; }
+.gh-brand { font-family: var(--font-heading); font-weight: 700; font-size: 1.4rem; color: var(--text-primary); }
+.gh-handle { color: var(--text-secondary); font-size: 0.95rem; }
+
+.gh-action {
+  color: var(--accent);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.github-cta-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 20px; }
+
+/* Responsive stacking */
+@media (max-width: 768px) {
+  .github-cta-card { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .gh-action { margin-top: 0.25rem; }
+}
+/* --- GitHub CTA: tune layout to match mock --- */
+.github-cta-card {
+  /* larger, more prominent card */
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  column-gap: 1.5rem;
+  row-gap: 0.25rem;
+  padding: 1.75rem 2rem;
+  min-height: 164px;
+  border-radius: 24px;
+  background: radial-gradient(220px 160px at 92px 60%, rgba(56,189,248,0.10), transparent 60%),
+              linear-gradient(135deg, rgba(30,41,59,0.80), rgba(15,23,42,0.75));
+}
+
+.github-logo { width: 64px; height: 64px; border-radius: 16px; }
+.gh-eyebrow { font-size: 1rem; }
+.gh-brand { font-size: 2rem; font-weight: 800; }
+.gh-handle { font-size: 1.05rem; }
+
+/* Place the action under the text, aligned with text start */
+.gh-action {
+  flex-basis: 100%;
+  margin-left: calc(64px + 1rem);
+  font-size: 1.05rem;
+}
+
+@media (max-width: 768px) {
+  .gh-action { margin-left: 0; }
+}
+/* --- GitHub CTA: logo glow + pulse --- */
+.github-logo {
+  color: var(--accent);
+  background:
+    radial-gradient(120% 120% at 50% 50%, rgba(56,189,248,0.18), rgba(56,189,248,0.04) 55%, transparent 70%),
+    linear-gradient(145deg, rgba(15,23,42,0.75), rgba(30,41,59,0.65));
+  box-shadow:
+    inset 0 0 0 1px rgba(56,189,248,0.35),
+    0 0 24px rgba(56,189,248,0.28),
+    0 0 60px rgba(56,189,248,0.16);
+  position: relative;
+  animation: gh-pulse 3.6s ease-in-out infinite;
+}
+
+.github-logo svg { filter: drop-shadow(0 0 8px rgba(56,189,248,0.35)); opacity: 0.98; }
+
+@keyframes gh-pulse {
+  0%, 100% {
+    box-shadow: inset 0 0 0 1px rgba(56,189,248,0.35), 0 0 20px rgba(56,189,248,0.24), 0 0 50px rgba(56,189,248,0.12);
+  }
+  50% {
+    box-shadow: inset 0 0 0 1px rgba(56,189,248,0.55), 0 0 32px rgba(56,189,248,0.40), 0 0 80px rgba(56,189,248,0.22);
+  }
+}
+/* --- GitHub CTA: small gaps between text lines --- */
+.github-cta-text { row-gap: 0.25rem; }
+/* --- GitHub CTA: increase gaps --- */
+.github-cta-text { row-gap: 0.5rem; }
+/* ============================================
+   GLOW SYSTEM â€” unified tokens + usage
+   ============================================ */
+:root {
+  --glow-color: rgba(56,189,248,0.28);
+  --glow-color-soft: rgba(56,189,248,0.16);
+  --glow-shadow-soft: 0 0 24px var(--glow-color-soft);
+  --glow-shadow-strong: 0 0 36px var(--glow-color), 0 0 90px var(--glow-color-soft);
+  --glow-border-soft: rgba(56,189,248,0.22);
+  --glow-border-strong: rgba(56,189,248,0.35);
+}
+
+/* Apply unified glow to site surfaces */
+.card,
+.info-card,
+.timeline-card,
+.project-card,
+.contact-form,
+.availability-card,
+.github-cta-card {
+  box-shadow: var(--glow-shadow-soft);
+  border-color: var(--glow-border-soft);
+}
+
+.card:hover,
+.info-card:hover,
+.timeline-card:hover,
+.project-card:hover,
+.contact-form:hover,
+.availability-card:hover,
+.github-cta-card:hover {
+  box-shadow: var(--glow-shadow-strong);
+  border-color: var(--glow-border-strong);
+}
+
+/* Buttons */
+.btn-primary { box-shadow: var(--glow-shadow-soft); }
+.btn-primary:hover { box-shadow: var(--glow-shadow-strong); }
+
+/* Small surfaces */
+.project-icon,
+.social-btn:hover { box-shadow: var(--glow-shadow-soft); }
+/* --- Glow System: lighter pass (softer aura site-wide) --- */
+:root {
+  --glow-color: rgba(56,189,248,0.20);
+  --glow-color-soft: rgba(56,189,248,0.10);
+  --glow-shadow-soft: 0 0 16px var(--glow-color-soft);
+  --glow-shadow-strong: 0 0 24px var(--glow-color), 0 0 60px var(--glow-color-soft);
+  --glow-border-soft: rgba(56,189,248,0.16);
+  --glow-border-strong: rgba(56,189,248,0.26);
+}
+
+/* Make GitHub logo glow use the softer tokens */
+.github-logo {
+  box-shadow:
+    inset 0 0 0 1px var(--glow-border-soft),
+    0 0 16px var(--glow-color),
+    0 0 40px var(--glow-color-soft);
+  animation: gh-pulse-soft 4s ease-in-out infinite;
+}
+.github-logo svg { filter: drop-shadow(0 0 6px var(--glow-color-soft)); }
+
+@keyframes gh-pulse-soft {
+  0%, 100% { box-shadow: inset 0 0 0 1px var(--glow-border-soft), 0 0 12px var(--glow-color), 0 0 30px var(--glow-color-soft); }
+  50%      { box-shadow: inset 0 0 0 1px var(--glow-border-strong), 0 0 20px var(--glow-color), 0 0 48px var(--glow-color-soft); }
+}
+/* --- Glow System: extra-light pass (dial down further) --- */
+:root {
+  --glow-color: rgba(56,189,248,0.12);
+  --glow-color-soft: rgba(56,189,248,0.05);
+  --glow-shadow-soft: 0 0 10px var(--glow-color-soft);
+  --glow-shadow-strong: 0 0 16px var(--glow-color), 0 0 36px var(--glow-color-soft);
+  --glow-border-soft: rgba(56,189,248,0.10);
+  --glow-border-strong: rgba(56,189,248,0.18);
+}
+
+/* Extra-light GitHub logo glow */
+.github-logo {
+  box-shadow:
+    inset 0 0 0 1px var(--glow-border-soft),
+    0 0 10px var(--glow-color),
+    0 0 28px var(--glow-color-soft);
+  animation: gh-pulse-xlight 4.2s ease-in-out infinite;
+}
+.github-logo svg { filter: drop-shadow(0 0 4px var(--glow-color-soft)); }
+
+@keyframes gh-pulse-xlight {
+  0%, 100% { box-shadow: inset 0 0 0 1px var(--glow-border-soft), 0 0 8px var(--glow-color), 0 0 22px var(--glow-color-soft); }
+  50%      { box-shadow: inset 0 0 0 1px var(--glow-border-strong), 0 0 12px var(--glow-color), 0 0 28px var(--glow-color-soft); }
+}
+/* Skills cards: revert look and keep uniform height */
+.skills-breakdown > .tilt-card { height: auto; }
+.skills-breakdown > .tilt-card > .skill-category { height: auto; display: block; }
+.skill-bars { flex: initial; }
+.skill-category { min-height: 420px; }
+@media (max-width: 900px) {
+  .skill-category { min-height: initial; }
+}
+/* Skills cards: equal height, classic look (uniform without stretching internals) */
+.skills-breakdown { align-items: stretch; grid-template-columns: repeat(3, minmax(0,1fr)); }
+.skills-breakdown > .tilt-card { height: 100%; }
+.skills-breakdown > .tilt-card > .skill-category { height: 100%; display: block; }
+/* Do not stretch inner list */
+.skill-bars { flex: initial; }
+/* Remove previous fixed min-height */
+.skill-category { min-height: initial; }
+@media (max-width: 900px) {
+  .skills-breakdown > .tilt-card { height: auto; }
+  .skills-breakdown > .tilt-card > .skill-category { height: auto; }
+}
+/* --- Skills cards: final equal-height, classic glass look --- */
+.skills-breakdown { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1.5rem; align-items: stretch; }
+.skills-breakdown > .tilt-card { height: 100%; }
+.skills-breakdown > .tilt-card > .skill-category { height: 100%; display: flex; flex-direction: column; }
+.skill-category { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; min-height: 360px; }
+.skill-bars { flex: 1; display: flex; flex-direction: column; gap: .75rem; }
+/* Give skill cards the same glow treatment as other surfaces */
+.card, .info-card, .timeline-card, .project-card, .contact-form, .availability-card, .github-cta-card, .skill-category { box-shadow: var(--glow-shadow-soft); border-color: var(--glow-border-soft); }
+.card:hover, .info-card:hover, .timeline-card:hover, .project-card:hover, .contact-form:hover, .availability-card:hover, .github-cta-card:hover, .skill-category:hover { box-shadow: var(--glow-shadow-strong); border-color: var(--glow-border-strong); }
+@media (max-width: 900px) { .skill-category { min-height: initial; } }

@@ -42,3 +42,5 @@ Thumbs.db
 # Deployment tool folders
 .vercel/
 .netlify/
+
+.preview.pid

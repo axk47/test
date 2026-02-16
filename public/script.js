@@ -461,6 +461,7 @@ function initHeroTilt() {
 // ============================================
 
 function initTiltCards() {
+  if (typeof renderSkills === 'function') renderSkills();
   const cards = document.querySelectorAll('[data-tilt]');
   
   cards.forEach(card => {
@@ -488,8 +489,8 @@ function initTiltCards() {
 // RENDER SKILLS
 // ============================================
 
-function renderSkills() {
-  const cloud = document.getElementById('skillsCloud');
+  
+  cloud.innerHTML = '';
   const langContainer = document.getElementById('langSkills');
   const frameworkContainer = document.getElementById('frameworkSkills');
   const conceptContainer = document.getElementById('conceptSkills');
@@ -775,8 +776,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (typeof initHeroTilt === 'function') initHeroTilt();
   if (typeof initTiltCards === 'function') initTiltCards();
 
-  // Render content
-  if (typeof renderSkills === 'function') renderSkills();
   if (typeof renderExperience === 'function') renderExperience();
   if (typeof renderProjects === 'function') renderProjects();
 
@@ -789,4 +788,59 @@ document.addEventListener("DOMContentLoaded", () => {
   // Easter egg
   if (typeof consoleEasterEgg === 'function') consoleEasterEgg();
 });
+
+
+
+// ============================================
+// SKILLS RENDERING (cloud + breakdown)
+// ============================================
+  
+  cloud.innerHTML = '';
+  const langBars = document.getElementById('skillsLang');
+  const fwBars = document.getElementById('skillsFrameworks');
+  const conceptBars = document.getElementById('skillsConcepts');
+  if (!cloud || !langBars || !fwBars || !conceptBars) return;
+
+  const byCat = { language: [], framework: [], concept: [] };
+  (skillsData || []).forEach(s => { if (byCat[s.category]) byCat[s.category].push(s); });
+
+  const colorOf = { language: 'blue', framework: 'green', concept: 'purple' };
+
+  ['language','framework','concept'].forEach(cat => {
+    byCat[cat].forEach(s => {
+      const tag = document.createElement('span');
+      tag.className = `skill-tag-cloud ${colorOf[cat]}`;
+      tag.textContent = s.name;
+      cloud.appendChild(tag);
+    });
+  });
+
+  const addBars = (container, list, color) => {
+    container.innerHTML = '';
+    list.forEach(s => {
+      const row = document.createElement('div');
+      row.className = 'skill-bar-item';
+      const name = document.createElement('span');
+      name.className = 'skill-name';
+      name.textContent = s.name;
+      const prog = document.createElement('div');
+      prog.className = 'skill-progress';
+      const bar = document.createElement('div');
+      bar.className = `skill-progress-bar ${color}`;
+      bar.style.width = (s.level ?? 0) + '%';
+      const pct = document.createElement('span');
+      pct.className = 'skill-percent';
+      pct.textContent = (s.level ?? 0) + '%';
+      prog.appendChild(bar);
+      row.appendChild(name);
+      row.appendChild(prog);
+      row.appendChild(pct);
+      container.appendChild(row);
+    });
+  };
+
+  addBars(langBars, byCat.language, 'blue');
+  addBars(fwBars, byCat.framework, 'green');
+  addBars(conceptBars, byCat.concept, 'purple');
+}
 
