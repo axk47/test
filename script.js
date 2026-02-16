@@ -761,42 +761,111 @@ function consoleEasterEgg() {
 // ============================================
 // HERO MATRIX â€” intro-only falling 0/1 then freeze
 // ============================================
-function initHeroMatrix() {\n  const canvas = document.getElementById('heroMatrix');\n  const hero = document.getElementById('hero');\n  if (!canvas || !hero) return;\n  const ctx = canvas.getContext('2d');\n  const dpr = Math.min(window.devicePixelRatio || 1, 2);\n  let cell = 12; // px; size of each glyph cell\n  let cols = 0, rows = 0;\n  let bits = []; // 2D array of '0'/'1' strings\n  let heads = []; // falling head per column\n\n  function resize() {\n    const r = hero.getBoundingClientRect();\n    const w = Math.max(320, Math.floor(r.width));\n    const h = Math.max(260, Math.floor(r.height));\n    canvas.style.width = w + 'px';\n    canvas.style.height = h + 'px';\n    canvas.width = Math.floor(w * dpr);\n    canvas.height = Math.floor(h * dpr);\n    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);\n\n    // adapt density to width so it looks like the reference\n    cell = Math.max(10, Math.min(16, Math.floor(w / 90)));\n    cols = Math.floor(w / cell);\n    rows = Math.floor(h / cell);\n\n    bits = Array.from({ length: cols }, () =>\n      Array.from({ length: rows }, () => (Math.random() > 0.5 ? '1' : '0'))\n    );\n    heads = Array.from({ length: cols }, () => -Math.floor(Math.random() * rows));\n  }\n\n  function drawFrame(ts, running) {\n    const w = canvas.clientWidth, h = canvas.clientHeight;\n    ctx.clearRect(0, 0, w, h);\n    ctx.font = ${Math.floor(cell * 0.86)}px 'Courier New', monospace;\n    ctx.textBaseline = 'top';\n\n    // A subtle vignette to match the reference depth\n    const grad = ctx.createRadialGradient(w*0.55, h*0.5, 10, w*0.55, h*0.5, Math.max(w,h));\n    grad.addColorStop(0, 'rgba(0,0,0,0)');\n    grad.addColorStop(1, 'rgba(0,0,0,0.14)');\n\n    for (let x = 0; x < cols; x++) {\n      const head = heads[x];\n      for (let y = 0; y < rows; y++) {\n        let a = 0.14; // base alpha for static cells\n        if (running) {\n          const d = y - head;\n          if (d >= 0 && d < 10) {\n            // brighter near the head, quick falloff\n            a = 0.65 * (1 - d / 10) + 0.18;\n          }\n        }\n        ctx.fillStyle = gba(56,189,248,);\n        ctx.fillText(bits[x][y], x * cell, y * cell);\n      }\n    }\n    // overlay vignette\n    ctx.fillStyle = grad;\n    ctx.fillRect(0, 0, w, h);\n  }\n\n  resize();\n  let start = performance.now();\n  let anim = true;\n\n  function tick(ts) {\n    // advance heads only while animating\n    if (anim) {\n      for (let i = 0; i < cols; i++) {\n        if (Math.random() > 0.02) heads[i]++; // per-frame fall\n        if (heads[i] > rows + 8) heads[i] = -Math.floor(Math.random() * rows * 0.5);\n      }\n    }\n    drawFrame(ts, anim);\n    if (ts - start < 2800) {\n      requestAnimationFrame(tick);\n    } else {\n      anim = false; // freeze to static grid\n      drawFrame(ts, anim);\n    }\n  }\n\n  requestAnimationFrame(tick);\n  window.addEventListener('resize', () => {\n    const wasAnimating = anim;\n    resize();\n    // redraw immediately; if animation still running, next RAF continues\n    drawFrame(performance.now(), wasAnimating);\n  });\n}\n\n  resize();
-  let running = true; let started = performance.now();
-
-  function draw(ts) {
-    const w = canvas.clientWidth, h = canvas.clientHeight;
-    // semi-transparent wipe for trail
-    ctx.fillStyle = 'rgba(15,23,42,0.12)';
-    ctx.fillRect(0, 0, w, h);
-
-    ctx.fillStyle = '#38bdf8'; // accent cyan
-    ctx.font = `${fontSize}px "Courier New", monospace`;
-
-    for (let i = 0; i < cols; i++) {
-      const char = Math.random() > 0.5 ? '1' : '0';
-      const x = i * fontSize;
-      const y = drops[i] * fontSize;
-      ctx.fillText(char, x, y);
-      if (y > h && Math.random() > 0.975) drops[i] = 0; else drops[i]++;
-    }
-    // run ~3s then freeze
-    if (running && ts - started < 3000) {
-      requestAnimationFrame(draw);
-    } else {
-      running = false; // leave last frame drawn
-    }
+function initHeroMatrix() {
+  const canvas = document.getElementById("heroMatrix");
+  const hero = document.getElementById("hero");
+  if (!canvas || !hero) return;
+  const ctx = canvas.getContext("2d");
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let cell = 12;
+  let cols = 0, rows = 0;
+  let bits = [];
+  let heads = [];
+  function resize() {
+    const r = hero.getBoundingClientRect();
+    const w = Math.max(320, Math.floor(r.width));
+    const h = Math.max(260, Math.floor(r.height));
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    canvas.width = Math.floor(w * dpr);
+    canvas.height = Math.floor(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cell = Math.max(10, Math.min(16, Math.floor(w / 90)));
+    cols = Math.floor(w / cell);
+    rows = Math.floor(h / cell);
+    bits = Array.from({ length: cols }, () => Array.from({ length: rows }, () => (Math.random() > 0.5 ? '1' : '0')));
+    heads = Array.from({ length: cols }, () => -Math.floor(Math.random() * rows));
   }
-
-  requestAnimationFrame(draw);
-  window.addEventListener('resize', () => {
-    const wasRunning = running;
-    resize();
-    if (wasRunning) requestAnimationFrame(draw);
+  function drawFrame(ts, running) {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+    ctx.font = `${Math.floor(cell * 0.86)}px 'Courier New', monospace`;
+    ctx.textBaseline = 'top';
+    const grad = ctx.createRadialGradient(w*0.55, h*0.5, 10, w*0.55, h*0.5, Math.max(w,h));
+    grad.addColorStop(0, 'rgba(0,0,0,0)');
+    grad.addColorStop(1, 'rgba(0,0,0,0.14)');
+    for (let x = 0; x < cols; x++) {
+      const head = heads[x];
+      for (let y = 0; y < rows; y++) {
+        let a = 0.14;
+        if (running) {
+          const d = y - head;
+          if (d >= 0 && d < 10) a = 0.65 * (1 - d / 10) + 0.18;
+        }
+        ctx.fillStyle = `rgba(56,189,248,${a.toFixed(3)})`;
+        ctx.fillText(bits[x][y], x * cell, y * cell);
+      }
+    }
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+  }
+  resize();
+  let start = performance.now();
+  let anim = true;
+  function tick(ts) {
+    if (anim) {
+      for (let i = 0; i < cols; i++) {
+        if (Math.random() > 0.02) heads[i]++;
+        if (heads[i] > rows + 8) heads[i] = -Math.floor(Math.random() * rows * 0.5);
+      }
+    }
+    drawFrame(ts, anim);
+    if (ts - start < 2800) requestAnimationFrame(tick);
+    else { anim = false; drawFrame(ts, anim); }
+  }
+  requestAnimationFrame(tick);
+  window.addEventListener('resize', () => { const wasAnimating = anim; resize(); drawFrame(performance.now(), wasAnimating); });
+}
+// ============================================
+// RENDERERS (skills are handled inline; add exp + projects here)
+// ============================================
+function renderExperience() {
+  const wrap = document.getElementById('experienceTimeline');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  (experienceData || []).forEach((item) => {
+    const card = document.createElement('div');
+    card.className = 'timeline-card card';
+    card.innerHTML = `
+      <div class="timeline-card-header">
+        <div>
+          <h3>${item.title}</h3>
+          <p class="text-muted">${item.company} · ${item.location}</p>
+        </div>
+        <span class="badge">${item.period}</span>
+      </div>
+      <ul class="timeline-list">${(item.description||[]).map(d=>`<li>${d}</li>`).join('')}</ul>
+    `;
+    wrap.appendChild(card);
   });
 }
-
-document.addEventListener('DOMContentLoaded', () => {
+function renderProjects() {
+  const grid = document.getElementById('projectsGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  (projectsData || []).forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'project-card card';
+    card.innerHTML = `
+      <div class="project-content">
+        <h3>${p.title}</h3>
+        ${p.subtitle ? `<p class="text-muted">${p.subtitle}</p>` : ''}
+        <p>${p.description||''}</p>
+        <div class="project-tags">${(p.tech||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}document.addEventListener('DOMContentLoaded', () => {
     initHeroMatrix();
   initFloatingOrbs();
   initParticleField();
