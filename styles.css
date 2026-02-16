@@ -2217,3 +2217,4 @@ body {
   opacity: 0.28; /* subtle */
 }
 @media (max-width: 768px) { .hero-matrix{ opacity: 0.22; } }
+\n/* Hero Matrix polish */\n.hero-matrix{ mix-blend-mode: screen; }\n

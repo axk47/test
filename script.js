@@ -36,9 +36,9 @@ const skillsData = [
 const experienceData = [
   {
     title: 'AI Training Specialist',
-    company: 'Aether Project – Outlier AI',
+    company: 'Aether Project â€“ Outlier AI',
     location: 'Remote',
-    period: 'Jan 2026 – Present',
+    period: 'Jan 2026 â€“ Present',
     type: 'Contract',
     description: [
       'Train and evaluate large language models by generating high-quality code examples',
@@ -51,7 +51,7 @@ const experienceData = [
     title: 'IT Go Live Support',
     company: 'Niagara Health',
     location: 'St. Catharines, ON',
-    period: 'Sep 2024 – Dec 2024',
+    period: 'Sep 2024 â€“ Dec 2024',
     type: 'Co-op',
     description: [
       'Analyzed complex software systems to identify bugs and troubleshoot issues',
@@ -64,7 +64,7 @@ const experienceData = [
     title: 'Scout Captain',
     company: 'Bharat Scout and Guides',
     location: 'Dammam, KSA',
-    period: 'Apr 2022 – Aug 2022',
+    period: 'Apr 2022 â€“ Aug 2022',
     type: 'Leadership',
     description: [
       'Led team of 30 members, increasing project completion efficiency by 20%',
@@ -140,7 +140,7 @@ function initMatrixRain() {
   resize();
   window.addEventListener('resize', resize);
   
-  const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const chars = 'ã‚¢ã‚¤ã‚¦ã‚¨ã‚ªã‚«ã‚­ã‚¯ã‚±ã‚³ã‚µã‚·ã‚¹ã‚»ã‚½ã‚¿ãƒãƒ„ãƒ†ãƒˆãƒŠãƒ‹ãƒŒãƒãƒŽãƒãƒ’ãƒ•ãƒ˜ãƒ›ãƒžãƒŸãƒ ãƒ¡ãƒ¢ãƒ¤ãƒ¦ãƒ¨ãƒ©ãƒªãƒ«ãƒ¬ãƒ­ãƒ¯ãƒ²ãƒ³0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const charArray = chars.split('');
   const fontSize = 14;
   const columns = Math.floor(canvas.width / fontSize);
@@ -753,39 +753,15 @@ function initScrollAnimations() {
 // ============================================
 
 function consoleEasterEgg() {
-  console.log('%c👋 Hey there!', 'font-size: 24px; font-weight: bold; color: #38bdf8;');
+  console.log('%cðŸ‘‹ Hey there!', 'font-size: 24px; font-weight: bold; color: #38bdf8;');
   console.log('%cThanks for checking out my portfolio!', 'font-size: 14px; color: #94a3b8;');
   console.log('%cFeel free to connect with me on LinkedIn or GitHub!', 'font-size: 12px; color: #64748b;');
 }
 
 // ============================================
-// HERO MATRIX — intro-only falling 0/1 then freeze
+// HERO MATRIX â€” intro-only falling 0/1 then freeze
 // ============================================
-function initHeroMatrix() {
-  const canvas = document.getElementById('heroMatrix');
-  const hero = document.getElementById('hero');
-  if (!canvas || !hero) return;
-  const ctx = canvas.getContext('2d');
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  let fontSize = 14; // px
-  let cols = 0; let drops = [];
-
-  function resize() {
-    const r = hero.getBoundingClientRect();
-    const w = Math.max(320, Math.floor(r.width));
-    const h = Math.max(240, Math.floor(r.height));
-    canvas.style.width = w + 'px';
-    canvas.style.height = h + 'px';
-    canvas.width = Math.floor(w * dpr);
-    canvas.height = Math.floor(h * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    fontSize = Math.max(12, Math.min(18, Math.floor(w / 80))); // adaptive density
-    cols = Math.floor(w / fontSize);
-    drops = new Array(cols).fill(0).map(() => Math.floor(Math.random() * (h / fontSize)));
-    ctx.clearRect(0,0,w,h);
-  }
-
-  resize();
+function initHeroMatrix() {\n  const canvas = document.getElementById('heroMatrix');\n  const hero = document.getElementById('hero');\n  if (!canvas || !hero) return;\n  const ctx = canvas.getContext('2d');\n  const dpr = Math.min(window.devicePixelRatio || 1, 2);\n  let cell = 12; // px; size of each glyph cell\n  let cols = 0, rows = 0;\n  let bits = []; // 2D array of '0'/'1' strings\n  let heads = []; // falling head per column\n\n  function resize() {\n    const r = hero.getBoundingClientRect();\n    const w = Math.max(320, Math.floor(r.width));\n    const h = Math.max(260, Math.floor(r.height));\n    canvas.style.width = w + 'px';\n    canvas.style.height = h + 'px';\n    canvas.width = Math.floor(w * dpr);\n    canvas.height = Math.floor(h * dpr);\n    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);\n\n    // adapt density to width so it looks like the reference\n    cell = Math.max(10, Math.min(16, Math.floor(w / 90)));\n    cols = Math.floor(w / cell);\n    rows = Math.floor(h / cell);\n\n    bits = Array.from({ length: cols }, () =>\n      Array.from({ length: rows }, () => (Math.random() > 0.5 ? '1' : '0'))\n    );\n    heads = Array.from({ length: cols }, () => -Math.floor(Math.random() * rows));\n  }\n\n  function drawFrame(ts, running) {\n    const w = canvas.clientWidth, h = canvas.clientHeight;\n    ctx.clearRect(0, 0, w, h);\n    ctx.font = ${Math.floor(cell * 0.86)}px 'Courier New', monospace;\n    ctx.textBaseline = 'top';\n\n    // A subtle vignette to match the reference depth\n    const grad = ctx.createRadialGradient(w*0.55, h*0.5, 10, w*0.55, h*0.5, Math.max(w,h));\n    grad.addColorStop(0, 'rgba(0,0,0,0)');\n    grad.addColorStop(1, 'rgba(0,0,0,0.14)');\n\n    for (let x = 0; x < cols; x++) {\n      const head = heads[x];\n      for (let y = 0; y < rows; y++) {\n        let a = 0.14; // base alpha for static cells\n        if (running) {\n          const d = y - head;\n          if (d >= 0 && d < 10) {\n            // brighter near the head, quick falloff\n            a = 0.65 * (1 - d / 10) + 0.18;\n          }\n        }\n        ctx.fillStyle = gba(56,189,248,);\n        ctx.fillText(bits[x][y], x * cell, y * cell);\n      }\n    }\n    // overlay vignette\n    ctx.fillStyle = grad;\n    ctx.fillRect(0, 0, w, h);\n  }\n\n  resize();\n  let start = performance.now();\n  let anim = true;\n\n  function tick(ts) {\n    // advance heads only while animating\n    if (anim) {\n      for (let i = 0; i < cols; i++) {\n        if (Math.random() > 0.02) heads[i]++; // per-frame fall\n        if (heads[i] > rows + 8) heads[i] = -Math.floor(Math.random() * rows * 0.5);\n      }\n    }\n    drawFrame(ts, anim);\n    if (ts - start < 2800) {\n      requestAnimationFrame(tick);\n    } else {\n      anim = false; // freeze to static grid\n      drawFrame(ts, anim);\n    }\n  }\n\n  requestAnimationFrame(tick);\n  window.addEventListener('resize', () => {\n    const wasAnimating = anim;\n    resize();\n    // redraw immediately; if animation still running, next RAF continues\n    drawFrame(performance.now(), wasAnimating);\n  });\n}\n\n  resize();
   let running = true; let started = performance.now();
 
   function draw(ts) {
