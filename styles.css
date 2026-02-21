@@ -2012,7 +2012,7 @@ body {
 .github-logo svg { width: 28px; height: 28px; opacity: 0.9; }
 
 .github-cta-text { display: grid; line-height: 1.1; }
-.gh-eyebrow { color: var(--text-secondary); font-size: 0.85rem; }
+.gh-eyebrow { color: var(--text-secondary); font-size: 0.86rem; }
 .gh-brand { font-family: var(--font-heading); font-weight: 700; font-size: 1.4rem; color: var(--text-primary); }
 .gh-handle { color: var(--text-secondary); font-size: 0.95rem; }
 
